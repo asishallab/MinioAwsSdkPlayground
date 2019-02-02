@@ -1,0 +1,3 @@
+{"id": 1, "name": "old yeller", "age": 16, "owner": {"id": 1, "species": "Homo sapiens", "nice": false}, "fleas": [ { "id": 1, "hairs": 6, "hungry": true }, { "id": 2, "hairs": 5, "hungry": false }, { "id": 3, "hairs": 9, "hungry": true } ] }
+{"id": 2, "name": "chiquito", "age": 8, "owner": {"id": 2, "species": "Alien martianus", "nice": false}, "fleas": [ { "id": 4, "hairs": 8, "hungry": true }, { "id": 5, "hairs": 11, "hungry": false }, { "id": 6, "hairs": 4, "hungry": true } ] }
+{"id": 3, "name": "cabron", "age": 12, "owner": {"id": 3, "species": "Homo sapiens", "nice": true}, "fleas": [ { "id": 7, "hairs": 6, "hungry": true }, { "id": 8, "hairs": 2, "hungry": false }, { "id": 9, "hairs": 12, "hungry": true } ] }

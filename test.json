@@ -1,0 +1,11 @@
+{
+    "Rules": [
+        {"id": "id-1", "condition": "x < 20"},
+        {"condition": "y > x"},
+        {"id": "id-2", "condition": "z = DEBUG"}
+    ]
+},
+{
+    "created": "June 27",
+    "modified": "July 6"
+}
