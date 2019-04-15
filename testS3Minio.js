@@ -14,36 +14,56 @@ var s3 = new AWS.S3(s3Settings)
 
 var params = {
   Bucket: 'test',
-  Key: 'test.json',
+  Key: 'test.csv',
   ExpressionType: 'SQL',
-  Expression: 'SELECT * FROM S3Object',
+  Expression: 'SELECT * FROM S3Object s WHERE s.a > 3 AND s.c < 9',
   InputSerialization: {
-    JSON: {
-      Type: 'LINES'
-    }
+    CSV: {
+      FileHeaderInfo: 'USE',
+      RecordDelimiter: '\n',
+      FieldDelimiter: ','
+    },
+    CompressionType: 'NONE'
   },
   OutputSerialization: {
-    JSON: { RecordDelimiter: ',' }
+    JSON: {
+      RecordDelimiter: ','
+    }
   }
 }
 
 console.log('Testing selectObjectContent(...)')
 
 s3.selectObjectContent(params, (err, data) => {
-	if (err) {
+  if (err) {
     console.log(`######\nERROR\n${err}\n######`)
-		return;
-	}
+    return;
+  }
 
-	const events = data.Payload;
-	
-	for (const event of events) {
-		if (event.Records) {
-			console.log(`PAYLOAD: ${event.Records.Payload.toString()}`);
-		} else if (event.Stats) {
-			console.log(`Processed ${event.Stats.Details.BytesProcessed} bytes`);
-		} else if (event.End) {
-			console.log('SelectObjectContent completed');
-		}
-	}
+  // data.Payload is a Readable Stream
+  const eventStream = data.Payload;
+
+  // Read events as they are available
+  eventStream.on('data', (event) => {
+    if (event.Records) {
+      // event.Records.Payload is a buffer containing
+      // a single record, partial records, or multiple records
+      console.log(event.Records.Payload.toString());
+    } else if (event.Stats) {
+      console.log(
+        `Processed ${event.Stats.Details.BytesProcessed} bytes`);
+    } else if (event.End) {
+      console.log('SelectObjectContent completed');
+    }
+  });
+
+  // Handle errors encountered during the API call
+  eventStream.on('error', (err) => {
+    console.log(`ERROR:\n${err}`)
+  });
+
+  eventStream.on('end', () => {
+    // Finished receiving events from S3
+    console.log('FINISHED reading from eventStream')
+  });
 })

@@ -1,0 +1,7 @@
+{
+  "accessKeyId": "admin",
+  "secretAccessKey": "eightLetters",
+  "endpoint": "http://127.0.0.1:9000",
+  "s3ForcePathStyle": true,
+  "signatureVersion": "v4"
+}
