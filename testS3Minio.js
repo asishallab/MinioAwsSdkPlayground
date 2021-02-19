@@ -16,7 +16,8 @@ var params = {
   Bucket: 'test',
   Key: 'test.csv',
   ExpressionType: 'SQL',
-  Expression: 'SELECT * FROM S3Object s WHERE s.a > 3 AND s.c < 9',
+  //Expression: "SELECT * FROM S3Object s WHERE s.t_id = 1 and s.strand = '+'",
+  Expression: "SELECT * FROM S3Object s WHERE s.strand = '+' ORDER BY s.t_id LIMIT 10",
   InputSerialization: {
     CSV: {
       FileHeaderInfo: 'USE',
@@ -33,6 +34,8 @@ var params = {
 }
 
 console.log('Testing selectObjectContent(...)')
+
+let startDate = new Date();
 
 s3.selectObjectContent(params, (err, data) => {
   if (err) {
@@ -65,5 +68,6 @@ s3.selectObjectContent(params, (err, data) => {
   eventStream.on('end', () => {
     // Finished receiving events from S3
     console.log('FINISHED reading from eventStream')
+    console.log(`Executed query in ${new Date() - startDate} ms.`)
   });
 })
